@@ -5,7 +5,7 @@ def calcular_consumo_mensal(potencia, horas_por_dia, dias_por_mes, preco_kwh):
     # Soma total de watts dos componentes
     #consumo_total_watts = sum(componentes.values())
     
-    if verifica_dados(potencia, horas_por_dia, dias_por_mes):
+    if valida_dados(potencia, horas_por_dia, dias_por_mes):
         # Converte para kWh (Watts × horas × dias / 1000)
         consumo_mensal_kwh = (potencia * horas_por_dia * dias_por_mes) / 1000
 
@@ -15,14 +15,30 @@ def calcular_consumo_mensal(potencia, horas_por_dia, dias_por_mes, preco_kwh):
         return potencia, consumo_mensal_kwh, custo_mensal
     else:
         return None
-    
-def verifica_dados(potencia, horas_por_dia, dias_por_mes):
-    
-    resultado_wallts =  (0 < potencia <= 1000 and 1 <= horas_por_dia <= 24 and <= dias_por_mes <= 30)
-    return (
-       
-    )
 
+
+def valida_tamanho_string(texto, minimo, maximo):
+    
+    if minimo <= len(texto) <= maximo:
+        return True
+    else:
+        return False
+    
+def verifica_str(nome_computador):
+    
+    if 3 <= len(nome_computador) <= 20:
+        print("")
+    else:
+        print("Nome inválido!")
+    
+def valida_dados(potencia, horas_por_dia, dias_por_mes):
+    
+    resultado_wallts =  (0 < potencia <= 1000 and
+                         1 <= horas_por_dia <= 24 and
+                         1 <= dias_por_mes <= 30)
+    
+    return resultado_wallts
+        
 
 def limpa_tela():
     
@@ -38,17 +54,18 @@ if __name__ == "__main__":
     print("")
 
     try:
-        computador    = str(input("Insira a marca e modelo do computador: \n"))
-        potencia      = int(input("Insira a potência do computador em (WATTS):\n"))
-        horas_por_dia = int(input("Insira quantas horas por dia o computador fica ligado (1 a 24):\n"))
-        dias_por_mes  = int(input("Insira quantos dias por mês o computador fica ligado (1 a 30):\n"))
-        preco_kwh     = 0.80  # R$/kWh
+        nome_computador = str(input("Insira um nome para o computador: \n"))
+        potencia        = int(input("Insira a potência do computador em (WATTS):\n"))
+        horas_por_dia   = int(input("Insira quantas horas por dia o computador fica ligado (1 a 24):\n"))
+        dias_por_mes    = int(input("Insira quantos dias por mês o computador fica ligado (1 a 30):\n"))
+        preco_kwh       = 0.80  # R$/kWh
 
         resultado = calcular_consumo_mensal(potencia, horas_por_dia, dias_por_mes, preco_kwh)
 
         if resultado:
             consumo_total, consumo_kwh, custo = resultado
             limpa_tela()
+            print(f"Nome do computador: {nome_computador}")
             print(f"Consumo total estimado: {consumo_total} W")
             print(f"Consumo mensal: {consumo_kwh:.2f} kWh")
             print(f"Custo mensal estimado: R${custo:.2f}")
